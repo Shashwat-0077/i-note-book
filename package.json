@@ -1,0 +1,16 @@
+{
+    "name": "i-note-book",
+    "version": "1.0.0",
+    "description": "website with react for notes",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "preinstall": "cd ./Backend && npm install && cd ../frontend && npm install",
+        "both": "concurrently \"npm run --prefix ./frontend start\" \"nodemon ./Backend/app.js --ignore frontend\""
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "concurrently": "^7.6.0"
+    }
+}
