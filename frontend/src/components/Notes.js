@@ -1,43 +1,49 @@
 import React, { useEffect, useContext, useState } from "react";
-import NoteItem from "./NoteItem";
 import NoteContext from "../context/NoteContext";
 import EditNoteModal from "./EditNoteModal";
+import NoteItem from "./NoteItem";
 
 const Notes = () => {
-    const { notes, getAllNotes } = useContext(NoteContext);
+    const { getAllNotes, notes } = useContext(NoteContext);
     const [show, setShow] = useState(false);
     const [previousNote, setPreviousNote] = useState({});
 
-    const handleUpdate = (note) => {
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            getAllNotes();
+        }
+        //eslint-disable-next-line
+    }, []);
+
+    const updateNote = (note) => {
         setPreviousNote(note);
         setShow(true);
     };
 
-    useEffect(() => {
-        getAllNotes();
-        //eslint-disable-next-line
-    }, []);
-
     return (
         <>
-            <h1 className="mt-4">Your notes</h1>
             <EditNoteModal
                 show={show}
+                setShow={setShow}
                 previousNote={previousNote}
-                handleClose={() => {
-                    setShow(false);
-                }}
+                setPreviousNote={setPreviousNote}
             />
-            <div className="row">
-                {notes.map((note) => {
-                    return (
-                        <NoteItem
-                            key={note._id}
-                            note={note}
-                            handleUpdate={handleUpdate}
-                        />
-                    );
-                })}
+
+            <h2 className="my-4">Your Notes</h2>
+            <div className="mt-2 row">
+                {notes.length !== 0 ? (
+                    notes.map((note) => {
+                        return (
+                            <NoteItem
+                                key={note._id}
+                                note={note}
+                                updateNote={updateNote}
+                            />
+                        );
+                    })
+                ) : (
+                    <p>No note here , try making a new note</p>
+                )}
             </div>
         </>
     );

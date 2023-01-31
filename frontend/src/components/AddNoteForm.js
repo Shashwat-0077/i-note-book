@@ -23,8 +23,8 @@ const AddNoteForm = () => {
             setAlertProperties(true, "danger", "Please fill all the fields");
             return;
         }
-
         addNote(note.title, note.body, note.tag);
+        setNote({ title: "", body: "", tag: "" });
     };
 
     const handleOnChange = (e) => {
@@ -42,6 +42,8 @@ const AddNoteForm = () => {
                         name="title"
                         placeholder="Enter Title"
                         onChange={handleOnChange}
+                        value={note.title}
+                        required
                     />
                 </Form.Group>
 
@@ -52,6 +54,8 @@ const AddNoteForm = () => {
                         name="body"
                         placeholder="Enter Body"
                         onChange={handleOnChange}
+                        value={note.body}
+                        required
                     />
                 </Form.Group>
 
@@ -62,6 +66,8 @@ const AddNoteForm = () => {
                         name="tag"
                         placeholder="Enter Tag"
                         onChange={handleOnChange}
+                        value={note.tag}
+                        required
                     />
                 </Form.Group>
 

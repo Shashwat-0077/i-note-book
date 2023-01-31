@@ -1,25 +1,25 @@
 import React, { useContext } from "react";
-import NoteContext from "../context/NoteContext";
 import Card from "react-bootstrap/Card";
+import NoteContext from "../context/NoteContext";
 
 const NoteItem = (props) => {
-    const { note, handleUpdate } = props;
+    const { note, updateNote } = props;
     const { deleteNote } = useContext(NoteContext);
 
     return (
-        <div className="col-md-3 my-3">
-            <Card className="h-100">
+        <div className="col-md-3 mt-3">
+            <Card style={{ width: "18rem" }}>
                 <Card.Body>
                     <Card.Title>{note.title}</Card.Title>
                     <Card.Text>{note.body}</Card.Text>
                     <i
-                        className="fa-solid fa-pen-nib px-2"
+                        className="fa-solid fa-pen-to-square"
                         onClick={() => {
-                            handleUpdate(note);
+                            updateNote(note);
                         }}
                     ></i>
                     <i
-                        className="fa-solid fa-trash-can px-2"
+                        className="fa-regular fa-trash-can mx-3"
                         onClick={() => {
                             deleteNote(note._id);
                         }}

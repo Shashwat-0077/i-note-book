@@ -7,8 +7,7 @@ const NoteState = (props) => {
     const { setAlertProperties } = useContext(AlertContext);
 
     const host = "http://localhost:5000";
-    const userToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNiZWU5NzVkMDQ3NjNhNWU0NTEyZDc3In0sImlhdCI6MTY3MzUzMjQ2OX0.F7UN_fm2VUI0dsNmoSo63OWuFPR-QzFSa2Kwp8ZjZyc";
+    const userToken = localStorage.getItem("token");
 
     //GET NOTES
     const getAllNotes = async () => {
@@ -80,6 +79,7 @@ const NoteState = (props) => {
         <NoteContext.Provider
             value={{
                 notes,
+                setNotes,
                 addNote,
                 deleteNote,
                 editNote,

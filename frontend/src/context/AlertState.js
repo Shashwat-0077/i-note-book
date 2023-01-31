@@ -14,12 +14,6 @@ const AlertState = (props) => {
         setAlertShow(show);
         setAlertType(type);
         setAlertMessage(message);
-
-        if (show === true) {
-            setTimeout(() => {
-                setAlertShow(false);
-            }, 3000);
-        }
     };
 
     return (

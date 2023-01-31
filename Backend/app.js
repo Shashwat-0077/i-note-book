@@ -23,7 +23,7 @@ app.use("/notes", require("./routes/notes"));
 
 app.use((err, req, res, next) => {
     const { status = 500, message = "Internal Server Error" } = err;
-    res.status(status).json({ error: message });
+    res.status(status).json({ success: false, error: message });
 });
 
 app.listen(port, () => {

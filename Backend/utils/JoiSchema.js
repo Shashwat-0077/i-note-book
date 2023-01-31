@@ -25,7 +25,7 @@ module.exports.validateRegUser = (req, res, next) => {
     let { error } = validateRegUser.validate(req.body);
     if (error) {
         const message = error.details.map((e) => e.message).join(",");
-        throw new ExpressError(400, message);
+        return res.json({ success: false, error: message });
     } else {
         next();
     }
@@ -35,7 +35,7 @@ module.exports.validateLogUser = (req, res, next) => {
     let { error } = validateLogUser.validate(req.body);
     if (error) {
         const message = error.details.map((e) => e.message).join(",");
-        throw new ExpressError(400, message);
+        return res.json({ success: false, error: message });
     } else {
         next();
     }

@@ -13,9 +13,14 @@ router.post(
     "/register",
     validateRegUser,
     detectError(async (req, res, next) => {
+        let success = false;
         const { name, email, password } = req.body;
         let user = await User.findOne({ email });
-        if (user) return res.status(400).send("Email is already in use");
+
+        if (user)
+            return res
+                .status(400)
+                .json({ success, error: "Email is already in use" });
 
         const salt = await bcrypt.genSalt(10);
         const secPass = await bcrypt.hash(password, salt);
@@ -30,7 +35,8 @@ router.post(
         };
 
         const authToken = jwt.sign(data, jwtSecret);
-        res.json({ authToken });
+        success = true;
+        res.json({ success, authToken });
     })
 );
 
@@ -38,22 +44,24 @@ router.post(
     "/login",
     validateLogUser,
     detectError(async (req, res, next) => {
+        let success = false;
         const { email, password } = req.body;
 
         const user = await User.findOne({ email });
-
         if (!user) {
-            return res
-                .status(400)
-                .json({ error: "Please Enter correct credentials" });
+            return res.status(400).json({
+                success: success,
+                error: "Please Enter correct credentials",
+            });
         }
 
         const isRealUser = await bcrypt.compare(password, user.password);
 
         if (!isRealUser) {
-            return res
-                .status(400)
-                .json({ error: "Please Enter correct credentials" });
+            return res.status(400).json({
+                success: success,
+                error: "Please Enter correct credentials",
+            });
         }
 
         const data = {
@@ -61,9 +69,9 @@ router.post(
                 id: user.id,
             },
         };
-        console.log(jwtSecret);
         const authToken = jwt.sign(data, jwtSecret);
-        res.json({ authToken });
+        success = true;
+        res.json({ success, authToken });
     })
 );
 

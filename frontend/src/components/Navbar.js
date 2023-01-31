@@ -1,15 +1,35 @@
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link, useLocation } from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import AlertContext from "../context/AlertContext";
 
 function NavScrollExample() {
     const location = useLocation();
+    const navigate = useNavigate();
+    const { setAlertProperties } = useContext(AlertContext);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setAlertProperties(true, "success", "Successfully Logged Out");
+        navigate("/login");
+    };
+
+    const handleNavHome = () => {
+        if (localStorage.getItem("token")) {
+            navigate("/");
+        } else {
+            setAlertProperties(
+                true,
+                "danger",
+                "You must be logged in to do that"
+            );
+        }
+    };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg     ">
+        <Navbar bg="dark" variant="dark" expand="lg" className="sticky-top">
             <Container fluid>
                 <Link to="/" className="navbar-brand">
                     INoteBook
@@ -21,14 +41,15 @@ function NavScrollExample() {
                         style={{ maxHeight: "100px" }}
                         navbarScroll
                     >
-                        <Link
-                            to="/"
+                        <div
+                            style={{ cursor: "pointer" }}
                             className={`nav-link ${
                                 location.pathname === "/" ? "active" : ""
                             }`}
+                            onClick={handleNavHome}
                         >
                             Home
-                        </Link>
+                        </div>
 
                         <Link
                             to="/about"
@@ -39,15 +60,30 @@ function NavScrollExample() {
                             About
                         </Link>
                     </Nav>
-                    <Form className="d-flex">
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
+
+                    {!localStorage.getItem("token") ? (
+                        <>
+                            <Link
+                                className="btn btn-outline-light mx-2"
+                                to="/login"
+                            >
+                                Login
+                            </Link>
+                            <Link
+                                className="btn btn-outline-light"
+                                to="/sign-up"
+                            >
+                                Sign Up
+                            </Link>{" "}
+                        </>
+                    ) : (
+                        <button
+                            className="btn btn-light"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+                    )}
                 </Navbar.Collapse>
             </Container>
         </Navbar>
